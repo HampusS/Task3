@@ -1,5 +1,4 @@
-l<?php
-
+<?php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,20 +9,19 @@ use App\Review;
 
 class ProductController extends Controller
 {
-
-    public function __construct(){
-      $this->middleware('auth', ['only' => ['create', 'store', 'edit', 'delete']]);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+     public function __construct(){
+       $this->middleware('auth', ['only' => ['create', 'store', 'edit', 'delete']]);
+     }
+
     public function index()
     {
       $products = Product::all();
-      return view("index", [
+      return view("home", [
         "products" => $products
       ]);
     }
@@ -63,7 +61,7 @@ class ProductController extends Controller
         $productStore->product_id = $product->id;
         $productStore->save();
       }
-      return redirect()->route('Home');
+      return redirect()->route('home');
     }
 
     /**
@@ -112,7 +110,7 @@ class ProductController extends Controller
       $product->price = $request->input("price");
       $product->description = $request->input("description");
       $product->save();
-      return redirect()->route('Home');
+      return redirect()->route('home');
     }
 
     /**
@@ -124,6 +122,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
       Product::destroy($id);
-      return redirect()->route('Home');
+      return redirect()->route('home');
     }
 }

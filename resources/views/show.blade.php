@@ -15,20 +15,22 @@
       color: inherit;
       text-decoration:none;
     }
-    .order-box{
+    #card{
       display: flex;
-      text-align: center;
-      flex-wrap: wrap;
+      flex: auto;
     }
-    .centralize{
+
+    #box{
+      display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
-    .marginalize{
-      margin: 10px;
-    }
-    .descend{
-      flex-direction: column;
+
+    img {
+      max-width: 100%;
+      line-height: 25;
+      vertical-align: bottom;
     }
     </style>
 </head>
@@ -36,6 +38,11 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
+                <a class="navbar-brand" href="{{ url('/home') }}">Back</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
@@ -73,39 +80,45 @@
         </nav>
 
         <main class="py-4">
-            <div class="row centralize">
-              <div class="card">
-                <div class="card-header"><h2>Products</h2></div>
-                  <div class="card-body">
-                    <div class="row border-bottom centralize">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-md-8">
+                      <div class="card">
+                          <div class="card-header"><h2>{{ $product->title }}</h2></div>
 
-                      <div class="marginalize">
-                          <a href="{{ route('products.create') }}" class="btn btn-outline-primary col-sm-12">Add Product</a>
-                      </div>
+                          <div class="card-body" id="card">
+                            <div class="col-sm-6">
+                              <div class="list-group">
+                                <h5 class="list-group-item"><b>Product Specifications:</b></h5>
+                                <li class="list-group-item">
+                                  <b>Brand</b> <br> {{ $product->brand }}
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Description</b> <br> {{ $product->description }}
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Price</b> <br> {{ $product->price }}
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Reviews</b> <br>
 
-                    </div>
+                                  {{ App\Review::findMany($product->id) }}
 
-                    <div class="row centralize descend">
-                      @foreach($products as $product)
-                        <div class="row marginalize centralize">
-
-                            <form action="{{ route('products.show', ['product' => $product->id]) }}" method="GET">
-                              <button type="submit" class="btn btn-outline-dark">{{$product->title}}</button>
-                            </form>
-                          <form action="{{ route('products.edit', ['product' => $product->id]) }}" method="GET">
-                            <button type="submit" class="btn btn-outline-secondary">Edit</button>
-                          </form>
-                          <form action="{{ route('products.destroy', ['product' => $product->id]) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger">Del</button>
-                          </form>
+                                  @foreach($product->reviews as $review)
+                                  {{$review}}
+                                  @endforeach
+                                </li>
+                              </div>
+                            </div>
+                            <div class="col-sm-6" id="box">
+                              <img src='{{ $product->image }}' class="rounded" alt="Image not found">
+                          </div>
                         </div>
-                      @endforeach
-                    </div>
-                </div>
+                      </div>
+                  </div>
               </div>
-            </main>
           </div>
+        </main>
+    </div>
 </body>
 </html>
