@@ -17,7 +17,6 @@ class CreateProductStoresTable extends Migration
             $table->increments('id');
             $table->integer('store_id');
             $table->integer('product_id');
-            $table->increments('id');
             $table->timestamps();
         });
     }

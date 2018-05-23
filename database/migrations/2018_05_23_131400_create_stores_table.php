@@ -17,7 +17,6 @@ class CreateStoresTable extends Migration
             $table->increments('id');
             $table->text('name');
             $table->text('city');
-            $table->increments('id');
             $table->timestamps();
         });
     }
