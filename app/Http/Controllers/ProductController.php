@@ -61,7 +61,7 @@ class ProductController extends Controller
         $productStore->product_id = $product->id;
         $productStore->save();
       }
-      return redirect()->route('home');
+      return redirect()->route('products.index');
     }
 
     /**
@@ -73,8 +73,11 @@ class ProductController extends Controller
     public function show($id)
     {
       $product = Product::find($id);
+      $reviews = $product->reviews;
+
       return view("show", [
-         "product" => $product
+         "product" => $product,
+         "reviews" => $reviews
       ]);
     }
 
@@ -110,7 +113,16 @@ class ProductController extends Controller
       $product->price = $request->input("price");
       $product->description = $request->input("description");
       $product->save();
-      return redirect()->route('home');
+      $productS = ProductStore::where("product_id", $id)->delete();
+
+      foreach ($request->input("stores") as $store)
+      {
+        $productStore = new ProductStore;
+        $productStore->store_id = $store;
+        $productStore->product_id = $product->id;
+        $productStore->save();
+      }
+      return redirect()->route('products.index');
     }
 
     /**
@@ -122,6 +134,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
       Product::destroy($id);
-      return redirect()->route('home');
+      return redirect()->route('products.index');
     }
 }

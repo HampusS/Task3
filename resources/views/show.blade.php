@@ -23,10 +23,12 @@
     #box{
       display: flex;
       align-items: center;
-      justify-content: center;
       text-align: center;
+      flex-direction: column;
     }
-
+    .marginalize{
+      margin: 10px;
+    }
     img {
       max-width: 100%;
       line-height: 25;
@@ -38,7 +40,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">Back</a>
+                <a class="navbar-brand" href="{{ route('products.index') }}">Back</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -91,27 +93,66 @@
                               <div class="list-group">
                                 <h5 class="list-group-item"><b>Product Specifications:</b></h5>
                                 <li class="list-group-item">
-                                  <b>Brand</b> <br> {{ $product->brand }}
+                                  <b>Brand</b>
+                                  <br>
+                                  {{ $product->brand }}
                                 </li>
                                 <li class="list-group-item">
-                                  <b>Description</b> <br> {{ $product->description }}
+                                  <b>Description</b>
+                                  <br>
+                                  {{ $product->description }}
                                 </li>
                                 <li class="list-group-item">
-                                  <b>Price</b> <br> {{ $product->price }}
+                                  <b>Price</b>
+                                  <br>
+                                  {{ $product->price }}
                                 </li>
                                 <li class="list-group-item">
-                                  <b>Reviews</b> <br>
-
-                                  {{ App\Review::findMany($product->id) }}
-
-                                  @foreach($product->reviews as $review)
-                                  {{$review}}
+                                  <b>Stores</b>
+                                  <br>
+                                  @foreach($product->stores as $store)
+                                  {{$store->name}} in {{$store->city}}
+                                  <br>
+                                  @endforeach
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Reviews</b>
+                                  <br>
+                                  @foreach($reviews as $review)
+                                  <div class="form-group">
+                                    <label for="exampleTextarea">{{$review->name}} rated {{$review->grade }} out of 5 <br> {{ $review->comment }}</label>
+                                  </div>
                                   @endforeach
                                 </li>
                               </div>
                             </div>
                             <div class="col-sm-6" id="box">
-                              <img src='{{ $product->image }}' class="rounded" alt="Image not found">
+                              <div class="row marginalize">
+                                <img src='{{ $product->image }}' class="rounded" alt="Image not found">
+                              </div>
+                              <div class="row marginalize">
+                                <form action="{{ route('reviews.store') }}" method="POST">
+                                  @csrf
+                                  <div class="form-group">
+                                    <label for="exampleTextarea"><b>Review</b></label>
+                                    <div class="col-12">
+                                        <input class="form-control" type="text" value="Anonymous" name="name">
+                                    </div>
+                                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect" name="grade">
+                                      <option selected>Rate the product..</option>
+                                      <option value="1">One</option>
+                                      <option value="2">Two</option>
+                                      <option value="3">Three</option>
+                                      <option value="4">Four</option>
+                                      <option value="5">Five</option>
+                                    </select>
+                                    <textarea class="form-control" id="exampleTextarea" rows="2" name="review" placeholder="Add a review to this product!"></textarea>
+                                  </div>
+                                  <input type="hidden" name="productID" value="{{ $product->id }}" />
+                                  <button type="submit" class="btn btn-outline-primary col-sm-12">
+                                    Add Review
+                                  </button>
+                              </div>
                           </div>
                         </div>
                       </div>
