@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Product;
+use App\Store;
+use App\ProductStore;
+use App\Review;
 class ReviewController extends Controller
 {
     /**
@@ -13,7 +16,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -34,7 +37,13 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $review = new Review;
+        $review->comment = $request->input("review");
+        $review->grade = $request->input("grade");
+        $review->product_id = $request->input("productID");
+        $review->name = $request->input("name");
+        $review->save();
+        return redirect()->route('products.show', ['product' => $request->input("productID")]);
     }
 
     /**

@@ -18,3 +18,4 @@ Route::get('/', function () {
 Route::resource('/products', 'ProductController');
 Route::resource('/reviews', 'ReviewController');
 Route::resource('/stores', 'StoreController');
+Auth::routes();

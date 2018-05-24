@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Product;
+use App\Store;
+use App\ProductStore;
+use App\Review;
 class StoreController extends Controller
 {
     /**
