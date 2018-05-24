@@ -131,13 +131,11 @@
                                 <img src='{{ $product->image }}' class="rounded" alt="Image not found">
                               </div>
                               <div class="row marginalize">
+                                @Auth
                                 <form action="{{ route('reviews.store') }}" method="POST">
                                   @csrf
                                   <div class="form-group">
                                     <label for="exampleTextarea"><b>Review</b></label>
-                                    <div class="col-12">
-                                        <input class="form-control" type="text" value="Anonymous" name="name">
-                                    </div>
                                     <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect" name="grade">
                                       <option selected>Rate the product..</option>
                                       <option value="1">One</option>
@@ -148,10 +146,17 @@
                                     </select>
                                     <textarea class="form-control" id="exampleTextarea" rows="2" name="review" placeholder="Add a review to this product!"></textarea>
                                   </div>
+                                  <input class="form-control" type="hidden" value="{{ Auth::user()->name }}" name="name">
                                   <input type="hidden" name="productID" value="{{ $product->id }}" />
                                   <button type="submit" class="btn btn-outline-primary col-sm-12">
                                     Add Review
                                   </button>
+                                </form>
+                                @else
+                                <div class="form-group">
+                                  <label for="exampleTextarea"><b>Login to Review</b></label>
+                                </div>
+                                @endAuth
                               </div>
                           </div>
                         </div>
