@@ -86,7 +86,7 @@
             @endif
 
                 <div class="title m-b-md">
-                    <a href="{{ route('products.index') }}" class="outline">SuperButiken</a>
+                    <a href="{{ route('products.index') }}" class="outline"><b>SuperButiken<b></a>
                 </div>
         </div>
     </body>
